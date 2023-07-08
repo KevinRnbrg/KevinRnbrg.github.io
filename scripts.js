@@ -1,15 +1,29 @@
 let spaceShip;
 let greenEnemy;
 let shipBullet;
-let alienBullet;
+let enemyBullet;
+let randomSpeed;
+
+let winCount = 0;
+let loseCount = 0;
 
 function startGame() {
     gameArea.start();
-    spaceShip = new component(110, 50, "black", 350, 650, 0, true);
-    greenEnemy = new component(60, 60, "green", 350, 100, 10, true);
-    shipBullet = new component(25, 25, "blue", spaceShip.x, spaceShip.y, 0, true);
-    enemyBullet = new component(25, 25, "red", greenEnemy.x, greenEnemy.y, 0, true);
+
+    randomSpeed = Math.floor(Math.random() * 20) + 5; // speed is random number from 5...20
+
+    spaceShip = new component(110, 50, "spaceship021.png", 350, 650, 0, true, "image");
+    greenEnemy = new component(60, 60, "green", 350, 100, randomSpeed, true), "color";
+    shipBullet = new component(25, 25, "blue", spaceShip.x, spaceShip.y, 0, true, "color");
+    enemyBullet = new component(25, 25, "red", greenEnemy.x, greenEnemy.y, 0, true, "color");
+    
 }
+
+document.addEventListener('keydown', function(event) { // space key disabled to stop scroll on page
+    if (event.code === 'Space' || event.code === 'ArrowUp' || event.code === 'ArrowDown' || event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
+      event.preventDefault();
+    }
+});
     
 let gameArea = {
     canvas : document.createElement("canvas"),
@@ -37,7 +51,20 @@ let gameArea = {
     }
 }
 
-function component(width, height, color, x, y, speed, alive) {
+function playerWin() {
+    winCount += 1;
+} 
+
+function playerLose() { // doesnt work as intended
+    loseCount =+ 1;
+}
+
+function component(width, height, color, x, y, speed, alive, type) {
+    this.type = type;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
     this.width = width;
     this.height = height;
     this.color = color;
@@ -51,8 +78,13 @@ function component(width, height, color, x, y, speed, alive) {
             return;
         } else {
             ctx = gameArea.context;
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
+            if (type == "image") {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            } else {
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            
         }
     }
     this.kill = function () {
@@ -66,9 +98,9 @@ function component(width, height, color, x, y, speed, alive) {
     this.updatePattern = function () { // enemy move pattern
         this.x += this.speedX;
         if (this.x >= 650) {
-            this.speedX = -10;
+            this.speedX = randomSpeed * -1;
         } else if (this.x <= 50) {
-            this.speedX = 10;
+            this.speedX = randomSpeed;
         }
     }
     this.newPos = function() {
@@ -96,6 +128,12 @@ function updateShootPattern() {
 }
 
 function restart() { // restart game
+    if (!spaceShip.alive && greenEnemy.alive) {
+        //playerLose();
+        loseCount += 1;
+    } else if (spaceShip.alive && !greenEnemy.alive) {
+        playerWin();
+    }
     gameArea.stop();
     gameArea.clear();
     startGame();
@@ -103,6 +141,11 @@ function restart() { // restart game
 
 function updateGameArea() {
     gameArea.clear();
+
+    // show player record
+    gameArea.context.font = "30px Arial";
+    gameArea.context.fillText("Wins: " + winCount, 30, 50);
+    gameArea.context.fillText("Losses: " + loseCount, 30, 85);
     
     // spaceship stops after release of movement button
     spaceShip.speedX = 0;
@@ -121,21 +164,22 @@ function updateGameArea() {
     if (gameArea.keys && gameArea.keys[83]) {spaceShip.speedY = 10; }
 
     // restart game with 'R'
-    if (gameArea.keys && gameArea.keys[82]) {restart();}
+    if (gameArea.keys && gameArea.keys[82]) {
+        restart(); 
+    }
     
     if (gameArea.x && gameArea.y) {
         spaceShip.x = gameArea.x;
         spaceShip.y = gameArea.y;
     }
 
-    
     // check if object is near edge and stop it
-    if (spaceShip.x > 700) {
+    if (spaceShip.x > 650) {
         if (gameArea.keys[39] || gameArea.keys[68]){
             spaceShip.speedX = 0;
         }
     }
-    if (spaceShip.x < 0) {
+    if (spaceShip.x < 40) {
         if (gameArea.keys[37] || gameArea.keys[65]){
             spaceShip.speedX = 0;
         }
@@ -178,17 +222,23 @@ function updateGameArea() {
         enemyBullet.y = greenEnemy.y + 65;
     }
 
-    // write 'You win' when enemy is dead and 'Your lose' when space ship is dead
-    if (!spaceShip.alive) {
+    // write 'You win' when enemy is dead and 'Your lose' when space ship is dead and draw when both die
+    if (!spaceShip.alive && greenEnemy.alive) {
+        gameArea.context.fillStyle = "Red";
         gameArea.context.font = "30px Arial";
-        gameArea.context.fillText("You lose, press R to restart", 10, 50);
+        gameArea.context.fillText("You lose, press R to restart", 210, 375);
     }
-    if (!greenEnemy.alive) {
+    if (!greenEnemy.alive && spaceShip.alive) {
+        gameArea.context.fillStyle = "Green";
         gameArea.context.font = "30px Arial";
-        gameArea.context.fillText("You win, press R to restart", 10, 50);
+        gameArea.context.fillText("You win, press R to restart", 210, 375);
+    }
+    if (!greenEnemy.alive && !spaceShip.alive) {
+        gameArea.context.fillStyle = "Orange";
+        gameArea.context.font = "30px Arial";
+        gameArea.context.fillText("Draw, press R to restart", 210, 375);
     }
     
-
     spaceShip.newPos();
     if (checkShipCollision() || spaceShip.alive == false) { // if ship collided with enemy bullet then die
         spaceShip.kill();
@@ -209,3 +259,4 @@ function updateGameArea() {
         enemyBullet.update();
     }
 }
+

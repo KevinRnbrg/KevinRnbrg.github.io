@@ -2,12 +2,15 @@ body {
     background-color: grey;
     display: flex;
     flex-direction: column;
+    flex-grow: 3;
     justify-content: center;
     align-items: center;
 }
 
 canvas {
-    border: 3px solid black;
+    border: 5px solid white;
     background-color: white;
+    background-image: url('sprites/pixelspace.png');
+    background-size: cover;
     width: 700px;
 }
