@@ -6,28 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <title>Invasion</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8110899686710614"
+     crossorigin="anonymous"></script>
 </head>
 <body>
-    <div id="menu-container">
-        <button onmouseup="startGameBtn()">START GAME</button>
-        <button onmouseup="stopGame()">PAUSE GAME</button>
+    <div id="game-and-info">
+        <div id="ad-container">
+            <a href="https://github.com/KevinRnbrg/KevinRnbrg.github.io/wiki/Weekly-Patch-Notes" target="_blank"><img src="sprites/update_banner.png" alt="updates_banner"></a>
+        </div>
+        <div id="game-container">
+            <canvas id="game-canvas">
+        </div>
+        <div id="text-container">
+            <h1><i>ALIEN INVASION</i></h1>
+            <h2>Rules</h2>
+            <p>You are a spaceship being attacked by a green alien.</p>
+            <p>Avoid the aliens attacks and kill it to win.</p>
+            <p>Winning will gain you 1 point and losing will subtract 1 point.</p>
+            <h2>Controls</h2>
+            <p>Move around with <b>arrow keys</b> or <b>WASD</b>.</p>
+            <p>Use <b>space bar</b> to shoot. </p>
+            <p>Press <b>R</b> to restart the game.</p>
+            <h2>Credits</h2>
+            <p>Code, art, design by <a href="https://github.com/KevinRnbrg">Kevin Rosenberg</a></p>
+        </div>
+    </div>
+    <div>
+        <button onmouseup="startGameBtn()">START</button>
+        <button onmouseup="stopGame()">PAUSE</button>
         <button onmouseup="clearGame()">CLEAR SCORES</button>
-    </div>
-    <div id="game-container">
-        <canvas id="game-canvas">
-    </div>
-    <div id="text-container">
-        <h1><i>ALIEN INVASION</i></h1>
-        <h2>Rules</h2>
-        <p>You are a spaceship being attacked by a green alien.</p>
-        <p>Avoid the aliens attacks and kill it to win.</p>
-        <p>Winning will gain you 1 point and losing will subtract 1 point.</p>
-        <h2>Controls</h2>
-        <p>Move around with <b>arrow keys</b> or <b>WASD</b>.</p>
-        <p>Use <b>space bar</b> to shoot. </p>
-        <p>Press <b>R</b> to restart the game.</p>
-        <h2>Credits</h2>
-        <p>Code, art, design by <a href="https://github.com/KevinRnbrg">Kevin Rosenberg</a></p>
     </div>
     <script src="scripts.js"></script>
 </body>
