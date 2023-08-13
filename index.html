@@ -27,8 +27,7 @@
             <p>Move around with <b>arrow keys</b> or <b>WASD</b>.</p>
             <p>Use <b>space bar</b> to shoot. </p>
             <p>Press <b>R</b> to restart the game.</p>
-            <h2>Credits</h2>
-            <p>Code, art, design by <a href="https://github.com/KevinRnbrg">Kevin Rosenberg</a></p>
+            <button id="openAboutModalBtn">About</button>
         </div>
     </div>
     <div>
@@ -36,6 +35,14 @@
         <button onmouseup="stopGame()">PAUSE</button>
         <button onmouseup="clearGame()">CLEAR SCORES</button>
     </div>
-    <script src="scripts.js"></script>
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>About</h2>
+            <p>Code, art, design by <a href="https://github.com/KevinRnbrg">Kevin Rosenberg</a></p>
+        </div>
+    </div>
+    <script src="game.js"></script>
+    <script src="webpage.js"></script>
 </body>
 </html>

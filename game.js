@@ -149,7 +149,7 @@ document.addEventListener('keydown', function(event) { // space key disabled to 
 function stopGame() {
     gameArea.context.font = " bold 30px 'Courier New', monospace";
     gameArea.context.textAlign = "center";
-    gameArea.context.fillStyle = "Orange";
+    gameArea.context.fillStyle = "#FFD580";
     gameArea.context.fillText("Paused", gameArea.canvas.width/2, 330);
     if (gamePause == false) {
         gameArea.stop();
@@ -212,7 +212,7 @@ function restart() { // restart game
 function displayPlayerRecord() { // show player record
     gameArea.context.font = "bold 30px 'Courier New', monospace";
     gameArea.context.textAlign = 'left';
-    gameArea.context.fillStyle = "cyan";
+    gameArea.context.fillStyle = "#7DF9FF";
     if (score < 0) {
         score = 0;
     }
@@ -224,7 +224,7 @@ function displayPlayerRecord() { // show player record
 function displayPlayerAndEnemyAttributes() {
     gameArea.context.font = "bold 30px 'Courier New', monospace";
     gameArea.context.textAlign = 'left';
-    gameArea.context.fillStyle = "cyan";
+    gameArea.context.fillStyle = "#7DF9FF";
     gameArea.context.fillText("Alien speed: " + (Math.abs(enemyAlien.speedX)), 30, 85);
     //gameArea.context.fillText("Spaceship bullet speed: " + playerBullet.speedY, 30, 110);
 }
@@ -242,22 +242,22 @@ function displayEndScreen() {    // 'You win', 'Your lose' and 'Draw' texts
     if (!enemyAlien.alive || !playerSpaceship.alive) {
         gameArea.context.fillStyle = "Gray";
         gameArea.context.fillRect(rectX, rectY, rectWidth, rectHeight)
-        gameArea.context.strokeStyle = "Cyan";
+        gameArea.context.strokeStyle = "#005F5F";
         gameArea.context.lineWidth = 10;
         gameArea.context.strokeRect(rectX, rectY, rectWidth, rectHeight);
-        gameArea.context.fillStyle = "Cyan";
+        gameArea.context.fillStyle = "#7DF9FF";
         gameArea.context.fillText("Press R to restart", centerX, 410);
     }
     if (!playerSpaceship.alive && enemyAlien.alive) {
-        gameArea.context.fillStyle = "#FF3131";
+        gameArea.context.fillStyle = "#f08080";
         gameArea.context.fillText("You lose", centerX, 360);
     }
     if (!enemyAlien.alive && playerSpaceship.alive) {
-        gameArea.context.fillStyle = "#0FFF50";
+        gameArea.context.fillStyle = "#98fb98";
         gameArea.context.fillText("You win", centerX, 360);
     }
     if (!enemyAlien.alive && !playerSpaceship.alive) {
-        gameArea.context.fillStyle = "Orange";
+        gameArea.context.fillStyle = "#FFD580";
         gameArea.context.fillText("Draw", centerX, 360);
     }
 }
@@ -308,9 +308,16 @@ function playerBulletMechanics() {
         if (playerBullet.speedY == 0) { // if bullet is with ship and space pressed
             shipShootSound.play();
         }
-        if (score >= 10) { // bullet faster when score >= 10
+        if (score >= 10) { // should have a better way of doing this 
             playerBullet.speedY = -20;
-        } else {
+        } else if (score >= 20) {
+            playerBullet.speedY = -25;
+        } else if (score >= 30) {
+            playerBullet.speedY = -30;
+        } else if (score >= 40) {
+            playerBullet.speedY = -35;
+        }
+        else {
             playerBullet.speedY = -15; 
         }
     } else if (playerBullet.y <= 0 || playerBullet.speedY == 0) {
